@@ -84,9 +84,6 @@
                         <div class="form-group"><label for="tcgName">Card Name</label><input type="text" id="tcgName" required></div>
                         <div class="form-group"><label for="tcgPrice">Price (£)</label><input type="number" id="tcgPrice" step="0.01" required></div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group"><label for="tcgRarity">Rarity</label><select id="tcgRarity" required><option value="common">Common</option><option value="uncommon">Uncommon</option><option value="rare">Rare</option></select></div>
-                    </div>
                     <div class="form-group"><label for="tcgImage">Image URL (Optional)</label><input type="url" id="tcgImage" placeholder="https://example.com/image.jpg"></div>
                     <div class="form-group"><label for="tcgDescription">Description</label><textarea id="tcgDescription" required></textarea></div>
                     <button type="submit" class="btn btn-primary">Add TCG Card</button>
@@ -99,9 +96,8 @@
         </div>
         <div id="successMessage" class="success-message hidden"></div>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
     <script src="admin.js"></script>
     <script>
     setTimeout(function() {
@@ -112,26 +108,13 @@
             if (e.key === 'Enter' && window.admin) admin.handleLogin();
         };
         if (document.getElementById('logoutBtn')) {
-            document.getElementById('logoutBtn').onclick = function() {
-                sessionStorage.removeItem('adminLoggedIn');
-                location.reload();
-            };
+            document.getElementById('logoutBtn').onclick = logout;
         }
         if (document.getElementById('vapesTab')) {
-            document.getElementById('vapesTab').onclick = function() {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                document.getElementById('vapes-tab').classList.add('active');
-            };
+            document.getElementById('vapesTab').onclick = function() { switchTab('vapes'); };
         }
         if (document.getElementById('tcgTab')) {
-            document.getElementById('tcgTab').onclick = function() {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                document.getElementById('tcg-tab').classList.add('active');
-            };
+            document.getElementById('tcgTab').onclick = function() { switchTab('tcg'); };
         }
     }, 1000);
     </script>

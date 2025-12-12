@@ -1,5 +1,5 @@
-// Admin Panel Management with Firebase
-const ADMIN_PASSWORD = 'admin123'; // Change this password
+ï»¿// Admin Panel Management with Supabase
+const ADMIN_PASSWORD = 'admin123';
 
 class AdminPanel {
     constructor() {
@@ -10,22 +10,13 @@ class AdminPanel {
         
         if (this.isLoggedIn) {
             this.showAdminPanel();
-            this.waitForFirebaseAndLoad();
+            this.waitForSupabaseAndLoad();
         } else {
             this.showLogin();
         }
     }
 
     setupEventListeners() {
-        const loginForm = document.getElementById('loginForm');
-        if (loginForm) {
-            loginForm.onsubmit = (e) => {
-                e.preventDefault();
-                this.handleLogin();
-                return false;
-            };
-        }
-
         const vapeForm = document.getElementById('addVapeForm');
         if (vapeForm) {
             vapeForm.onsubmit = (e) => {
@@ -53,7 +44,7 @@ class AdminPanel {
             sessionStorage.setItem('adminLoggedIn', 'true');
             this.isLoggedIn = true;
             this.showAdminPanel();
-            this.waitForFirebaseAndLoad();
+            this.waitForSupabaseAndLoad();
         } else {
             errorDiv.textContent = 'Incorrect password';
             errorDiv.classList.remove('hidden');
@@ -73,40 +64,36 @@ class AdminPanel {
         document.getElementById('adminPanel').classList.remove('hidden');
     }
 
-    waitForFirebaseAndLoad() {
-        if (typeof db !== 'undefined' && db) {
-            this.loadProductsFromFirebase();
+    waitForSupabaseAndLoad() {
+        if (typeof supabase !== 'undefined' && supabase) {
+            this.loadProductsFromSupabase();
         } else {
-            setTimeout(() => this.waitForFirebaseAndLoad(), 500);
+            setTimeout(() => this.waitForSupabaseAndLoad(), 500);
         }
     }
 
-    async loadProductsFromFirebase() {
+    async loadProductsFromSupabase() {
         try {
-            const vapesSnapshot = await db.collection('products').doc('vapes').get();
-            if (vapesSnapshot.exists) {
-                this.vapeProducts = vapesSnapshot.data().items || [];
-            }
+            const { data: vapes, error: vapesError } = await supabase
+                .from('products')
+                .select('*')
+                .eq('type', 'vapes');
+            
+            if (vapesError) throw vapesError;
+            this.vapeProducts = vapes || [];
 
-            const tcgSnapshot = await db.collection('products').doc('tcg').get();
-            if (tcgSnapshot.exists) {
-                this.tcgProducts = tcgSnapshot.data().items || [];
-            }
+            const { data: tcg, error: tcgError } = await supabase
+                .from('products')
+                .select('*')
+                .eq('type', 'tcg');
+            
+            if (tcgError) throw tcgError;
+            this.tcgProducts = tcg || [];
 
             this.displayProducts();
         } catch (error) {
             console.error('Error loading products:', error);
             this.showSuccess('Error loading products: ' + error.message);
-        }
-    }
-
-    async saveProductsToFirebase(type, products) {
-        try {
-            await db.collection('products').doc(type).set({ items: products });
-            console.log(`${type} saved to Firebase`);
-        } catch (error) {
-            console.error('Error saving products:', error);
-            this.showSuccess('Error saving: ' + error.message);
         }
     }
 
@@ -117,56 +104,78 @@ class AdminPanel {
         const imageUrl = document.getElementById('vapeImage').value;
 
         const newProduct = {
-            id: Date.now(),
+            type: 'vapes',
             name: name,
             price: price,
             description: description,
-            imageUrl: imageUrl || null
+            image_url: imageUrl || null
         };
 
-        this.vapeProducts.push(newProduct);
-        await this.saveProductsToFirebase('vapes', this.vapeProducts);
-        this.displayProducts();
-        this.showSuccess('Vape product added successfully!');
-        document.getElementById('addVapeForm').reset();
+        try {
+            const { data, error } = await supabase
+                .from('products')
+                .insert([newProduct])
+                .select();
+            
+            if (error) throw error;
+
+            await this.loadProductsFromSupabase();
+            this.showSuccess('Vape product added successfully!');
+            document.getElementById('addVapeForm').reset();
+        } catch (error) {
+            console.error('Error adding product:', error);
+            this.showSuccess('Error: ' + error.message);
+        }
     }
 
     async addTCGProduct() {
         const name = document.getElementById('tcgName').value;
         const price = parseFloat(document.getElementById('tcgPrice').value);
-        const rarity = document.getElementById('tcgRarity').value;
         const description = document.getElementById('tcgDescription').value;
         const imageUrl = document.getElementById('tcgImage').value;
 
         const newProduct = {
-            id: Date.now(),
+            type: 'tcg',
             name: name,
             price: price,
-            rarity: rarity,
             description: description,
-            imageUrl: imageUrl || null
+            image_url: imageUrl || null
         };
 
-        this.tcgProducts.push(newProduct);
-        await this.saveProductsToFirebase('tcg', this.tcgProducts);
-        this.displayProducts();
-        this.showSuccess('TCG card added successfully!');
-        document.getElementById('addTCGForm').reset();
+        try {
+            const { data, error } = await supabase
+                .from('products')
+                .insert([newProduct])
+                .select();
+            
+            if (error) throw error;
+
+            await this.loadProductsFromSupabase();
+            this.showSuccess('TCG card added successfully!');
+            document.getElementById('addTCGForm').reset();
+        } catch (error) {
+            console.error('Error adding product:', error);
+            this.showSuccess('Error: ' + error.message);
+        }
     }
 
     async deleteProduct(type, id) {
         if (!confirm('Are you sure you want to delete this product?')) return;
 
-        if (type === 'vapes') {
-            this.vapeProducts = this.vapeProducts.filter(p => p.id !== id);
-            await this.saveProductsToFirebase('vapes', this.vapeProducts);
-        } else {
-            this.tcgProducts = this.tcgProducts.filter(p => p.id !== id);
-            await this.saveProductsToFirebase('tcg', this.tcgProducts);
-        }
+        try {
+            const { error } = await supabase
+                .from('products')
+                .delete()
+                .eq('id', id);
+            
+            if (error) throw error;
 
-        this.displayProducts();
-        this.showSuccess('Product deleted successfully!');
+            await this.loadProductsFromSupabase();
+            this.showSuccess('Product deleted successfully!');
+        } catch (error) {
+            console.error('Error deleting product:', error);
+            this.showSuccess('Error: ' + error.message);
+        }
     }
 
     displayProducts() {
@@ -176,12 +185,12 @@ class AdminPanel {
                 <div class="product-item">
                     <div class="product-item-info">
                         <h4>${product.name}</h4>
-                        <p><strong>Price:</strong> £${product.price.toFixed(2)}</p>
-                        ${product.imageUrl ? `<p><strong>Image:</strong> <a href="${product.imageUrl}" target="_blank">View</a></p>` : ''}
+                        <p><strong>Price:</strong> Â£${product.price.toFixed(2)}</p>
+                        ${product.image_url ? `<p><strong>Image:</strong> <a href="${product.image_url}" target="_blank">View</a></p>` : ''}
                         <p>${product.description}</p>
                     </div>
                     <div class="product-item-actions">
-                        <button class="delete-btn" onclick="admin.deleteProduct('vapes', ${product.id})">Delete</button>
+                        <button class="delete-btn" onclick="window.admin.deleteProduct('vapes', ${product.id})">Delete</button>
                     </div>
                 </div>
             `).join('');
@@ -193,12 +202,12 @@ class AdminPanel {
                 <div class="product-item">
                     <div class="product-item-info">
                         <h4>${product.name}</h4>
-                        <p><strong>Rarity:</strong> ${product.rarity.charAt(0).toUpperCase() + product.rarity.slice(1)} | <strong>Price:</strong> £${product.price.toFixed(2)}</p>
-                        ${product.imageUrl ? `<p><strong>Image:</strong> <a href="${product.imageUrl}" target="_blank">View</a></p>` : ''}
+                        <p><strong>Price:</strong> Â£${product.price.toFixed(2)}</p>
+                        ${product.image_url ? `<p><strong>Image:</strong> <a href="${product.image_url}" target="_blank">View</a></p>` : ''}
                         <p>${product.description}</p>
                     </div>
                     <div class="product-item-actions">
-                        <button class="delete-btn" onclick="admin.deleteProduct('tcg', ${product.id})">Delete</button>
+                        <button class="delete-btn" onclick="window.admin.deleteProduct('tcg', ${product.id})">Delete</button>
                     </div>
                 </div>
             `).join('');
@@ -229,7 +238,6 @@ function switchTab(tab) {
     document.getElementById(`${tab}-tab`).classList.add('active');
 }
 
-let admin;
 document.addEventListener('DOMContentLoaded', () => {
     window.admin = new AdminPanel();
 });
