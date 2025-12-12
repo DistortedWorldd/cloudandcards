@@ -1,0 +1,12 @@
+LOGO SETUP:
+
+Save the Cloud & Cards logo image you have as "logo.png" in this directory.
+
+The logo should be:
+- Named: logo.png
+- Format: PNG with transparent background
+- Recommended size: 200x200px or larger
+
+The logo is already referenced in index.html and will display automatically once you add the file.
+
+If you don't have the logo file handy, the site will work fine - just add it later and refresh the page.

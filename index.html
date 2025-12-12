@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud & Cards - Premium Vapes & Trading Cards</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">Cloud & Cards</div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="vapes.html">Vapes</a></li>
+                <li><a href="tcg.html">TCG Cards</a></li>
+                <li><a href="sell.html">Sell Your Cards</a></li>
+                <li><a href="#" class="cart-icon" id="cartBtn">🛒 <span id="cartCount">0</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="logo-placeholder">
+                    <svg width="200" height="200" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Cloud -->
+                        <g transform="translate(50, 80)">
+                            <ellipse cx="60" cy="60" rx="50" ry="40" fill="#89CFF0"/>
+                            <ellipse cx="100" cy="50" rx="55" ry="45" fill="#67B5FF"/>
+                            <ellipse cx="140" cy="60" rx="50" ry="40" fill="#4A90E2"/>
+                            <path d="M 30 65 Q 50 80 70 75 Q 90 70 110 75 Q 130 80 150 75 Q 170 70 180 65" 
+                                  stroke="#2C5AA0" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        </g>
+                        <!-- Card -->
+                        <g transform="translate(200, 100)">
+                            <rect x="0" y="0" width="140" height="180" rx="15" fill="#2C5AA0" stroke="#1E3A5F" stroke-width="4"/>
+                            <rect x="10" y="10" width="120" height="160" rx="10" fill="#4A90E2"/>
+                            <!-- Spade symbol -->
+                            <path d="M 70 60 Q 70 40 55 35 Q 45 30 45 45 Q 45 55 55 60 L 55 75 L 50 75 L 50 80 L 90 80 L 90 75 L 85 75 L 85 60 Q 95 55 95 45 Q 95 30 85 35 Q 70 40 70 60 Z" 
+                                  fill="white"/>
+                        </g>
+                        <!-- Text -->
+                        <text x="200" y="320" font-family="Poppins, sans-serif" font-size="48" font-weight="700" fill="#2C5AA0" text-anchor="middle">CLOUD</text>
+                        <text x="200" y="360" font-family="Poppins, sans-serif" font-size="48" font-weight="700" fill="#2C5AA0" text-anchor="middle">&amp; CARDS</text>
+                    </svg>
+                </div>
+                <h1 class="hero-title">Welcome to Cloud & Cards</h1>
+                <p class="hero-description">Your destination for premium vapes and trading card collectibles.</p>
+                <div class="hero-buttons">
+                    <a href="vapes.html" class="btn btn-primary">Shop Vapes</a>
+                    <a href="tcg.html" class="btn btn-secondary">Shop TCG Cards</a>
+                    <a href="sell.html" class="btn btn-secondary">💰 Sell Your Cards</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💨</div>
+                    <h3>Premium Vapes</h3>
+                    <p>High-quality vaping products with the latest technology and best flavors.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎴</div>
+                    <h3>Rare TCG Cards</h3>
+                    <p>Collectible trading cards from common to ultra-rare finds for collectors.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚚</div>
+                    <h3>Fast Shipping</h3>
+                    <p>Quick and secure delivery right to your doorstep.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Cloud & Cards</h3>
+                    <p>Your trusted source for vapes and trading cards.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@cloudandcards.com</p>
+                    <p>Phone: (555) 123-4567</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="vapes.html">Vapes</a></li>
+                        <li><a href="tcg.html">TCG Cards</a></li>
+                        <li><a href="sell.html">Sell Your Cards</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Cloud & Cards. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Shopping Cart</h2>
+            <div id="cartItems"></div>
+            <div class="cart-total">
+                <strong>Total: �<span id="cartTotal">0.00</span></strong>
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">Checkout (Demo Only)</button>
+        </div>
+    </div>
+
+        <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
+

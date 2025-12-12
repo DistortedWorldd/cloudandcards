@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Cloud & Cards</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container { max-width: 1200px; margin: 2rem auto; padding: 2rem; }
+        .login-section, .admin-panel { background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 4px 6px rgba(74, 144, 226, 0.1); max-width: 500px; margin: 4rem auto; }
+        .admin-panel { max-width: 1200px; }
+        .login-section h2, .admin-panel h2 { color: var(--primary-blue); margin-bottom: 2rem; text-align: center; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: var(--text-dark); font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.875rem; border: 2px solid var(--bg-light); border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 1rem; }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .error-message { color: #FF6B6B; text-align: center; margin-top: 1rem; font-weight: 600; }
+        .success-message { color: #51CF66; text-align: center; margin-top: 1rem; font-weight: 600; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .logout-btn { background: #FF6B6B; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 20px; cursor: pointer; font-weight: 600; }
+        .product-form { background: var(--bg-light); padding: 2rem; border-radius: 15px; margin-bottom: 2rem; }
+        .products-list { margin-top: 2rem; }
+        .product-item { background: var(--bg-light); padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .product-item-info h4 { color: var(--dark-blue); margin-bottom: 0.5rem; }
+        .product-item-info p { color: var(--text-light); font-size: 0.9rem; margin: 0.25rem 0; }
+        .delete-btn { background: #FF6B6B; color: white; padding: 0.5rem 1rem; border: none; border-radius: 15px; cursor: pointer; font-weight: 600; }
+        .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--bg-light); }
+        .tab { padding: 1rem 2rem; background: none; border: none; color: var(--text-light); font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; }
+        .tab.active { color: var(--primary-blue); border-bottom-color: var(--primary-blue); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .hidden { display: none !important; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">Cloud & Cards - Admin</div>
+            <ul class="nav-menu"><li><a href="index.html">Back to Site</a></li></ul>
+        </div>
+    </nav>
+    <div id="loginSection" class="login-section">
+        <h2>Admin Login</h2>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter admin password">
+        </div>
+        <button type="button" id="loginBtn" class="btn btn-primary" style="width: 100%;">Login</button>
+        <div id="loginError" class="error-message hidden"></div>
+    </div>
+    <div id="adminPanel" class="admin-panel hidden">
+        <div class="admin-header">
+            <h2>Product Management</h2>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+        <div class="tabs">
+            <button class="tab active" id="vapesTab">Vape Products</button>
+            <button class="tab" id="tcgTab">TCG Cards</button>
+        </div>
+        <div id="vapes-tab" class="tab-content active">
+            <div class="product-form">
+                <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">Add New Vape Product</h3>
+                <form id="addVapeForm">
+                    <div class="form-row">
+                        <div class="form-group"><label for="vapeName">Product Name</label><input type="text" id="vapeName" required></div>
+                        <div class="form-group"><label for="vapePrice">Price (£)</label><input type="number" id="vapePrice" step="0.01" required></div>
+                    </div>
+                    <div class="form-group"><label for="vapeImage">Image URL (Optional)</label><input type="url" id="vapeImage" placeholder="https://example.com/image.jpg"></div>
+                    <div class="form-group"><label for="vapeDescription">Description</label><textarea id="vapeDescription" required></textarea></div>
+                    <button type="submit" class="btn btn-primary">Add Vape Product</button>
+                </form>
+            </div>
+            <div class="products-list">
+                <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">Current Vape Products</h3>
+                <div id="vapesList"></div>
+            </div>
+        </div>
+        <div id="tcg-tab" class="tab-content">
+            <div class="product-form">
+                <h3 style="color: var(--primary-blue); margin-bottom: 1.5rem;">Add New TCG Card</h3>
+                <form id="addTCGForm">
+                    <div class="form-row">
+                        <div class="form-group"><label for="tcgName">Card Name</label><input type="text" id="tcgName" required></div>
+                        <div class="form-group"><label for="tcgPrice">Price (£)</label><input type="number" id="tcgPrice" step="0.01" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label for="tcgRarity">Rarity</label><select id="tcgRarity" required><option value="common">Common</option><option value="uncommon">Uncommon</option><option value="rare">Rare</option></select></div>
+                    </div>
+                    <div class="form-group"><label for="tcgImage">Image URL (Optional)</label><input type="url" id="tcgImage" placeholder="https://example.com/image.jpg"></div>
+                    <div class="form-group"><label for="tcgDescription">Description</label><textarea id="tcgDescription" required></textarea></div>
+                    <button type="submit" class="btn btn-primary">Add TCG Card</button>
+                </form>
+            </div>
+            <div class="products-list">
+                <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">Current TCG Cards</h3>
+                <div id="tcgList"></div>
+            </div>
+        </div>
+        <div id="successMessage" class="success-message hidden"></div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="admin.js"></script>
+    <script>
+    setTimeout(function() {
+        document.getElementById('loginBtn').onclick = function() {
+            if (window.admin) admin.handleLogin();
+        };
+        document.getElementById('password').onkeypress = function(e) {
+            if (e.key === 'Enter' && window.admin) admin.handleLogin();
+        };
+        if (document.getElementById('logoutBtn')) {
+            document.getElementById('logoutBtn').onclick = function() {
+                sessionStorage.removeItem('adminLoggedIn');
+                location.reload();
+            };
+        }
+        if (document.getElementById('vapesTab')) {
+            document.getElementById('vapesTab').onclick = function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById('vapes-tab').classList.add('active');
+            };
+        }
+        if (document.getElementById('tcgTab')) {
+            document.getElementById('tcgTab').onclick = function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById('tcg-tab').classList.add('active');
+            };
+        }
+    }, 1000);
+    </script>
+</body>
+</html>

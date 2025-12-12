@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your TCG Cards - Cloud & Cards</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">Cloud & Cards</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="vapes.html">Vapes</a></li>
+                <li><a href="tcg.html">TCG Cards</a></li>
+                <li><a href="sell.html" class="active">Sell Your Cards</a></li>
+                <li><a href="#" class="cart-icon" id="cartBtn">🛒 <span id="cartCount">0</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Sell Your TCG Cards</h1>
+            <p>Have rare cards to sell? Submit them here and we'll review your offer</p>
+        </div>
+    </section>
+
+    <!-- Sell Form Section -->
+    <section class="sell-section">
+        <div class="container">
+            <div class="sell-form-container">
+                <div id="formSection">
+                    <div class="form-intro">
+                        <h2>Submit Your Card Details</h2>
+                        <p>Fill out the form below with information about the card(s) you'd like to sell. We'll review your submission and contact you within 24-48 hours.</p>
+                    </div>
+
+                    <form id="sellForm" class="sell-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sellerName">Your Name <span class="required">*</span></label>
+                                <input type="text" id="sellerName" name="sellerName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="sellerEmail">Email Address <span class="required">*</span></label>
+                                <input type="email" id="sellerEmail" name="sellerEmail" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cardName">Card Name <span class="required">*</span></label>
+                                <input type="text" id="cardName" name="cardName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cardSeries">Series / Set <span class="required">*</span></label>
+                                <input type="text" id="cardSeries" name="cardSeries" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cardCondition">Condition <span class="required">*</span></label>
+                                <select id="cardCondition" name="cardCondition" required>
+                                    <option value="">Select condition...</option>
+                                    <option value="mint">Mint (M)</option>
+                                    <option value="near-mint">Near Mint (NM)</option>
+                                    <option value="light-play">Light Play (LP)</option>
+                                    <option value="moderate-play">Moderate Play (MP)</option>
+                                    <option value="heavy-play">Heavy Play (HP)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="cardRarity">Rarity <span class="required">*</span></label>
+                                <select id="cardRarity" name="cardRarity" required>
+                                    <option value="">Select rarity...</option>
+                                    <option value="common">Common</option>
+                                    <option value="uncommon">Uncommon</option>
+                                    <option value="rare">Rare</option>
+                                    <option value="ultra-rare">Ultra Rare</option>
+                                    <option value="secret-rare">Secret Rare</option>
+                                    <option value="promotional">Promotional</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="askingPrice">Asking Price (�) <span class="required">*</span></label>
+                                <input type="number" id="askingPrice" name="askingPrice" step="0.01" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cardImage">Card Image (Optional)</label>
+                                <input type="file" id="cardImage" name="cardImage" accept="image/*" class="file-input">
+                                <div class="file-input-label">
+                                    <span class="file-icon">📷</span>
+                                    <span id="fileName">Choose file or drag here</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="additionalInfo">Additional Information</label>
+                            <textarea id="additionalInfo" name="additionalInfo" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-large">Submit Card for Review</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Info Cards -->
+            <div class="info-cards">
+                <div class="info-card">
+                    <div class="info-icon">💰</div>
+                    <h3>Fair Prices</h3>
+                    <p>We offer competitive prices based on current market value and card condition.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">⚡</div>
+                    <h3>Fast Response</h3>
+                    <p>Get a quote within 24-48 hours of submission.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🔒</div>
+                    <h3>Secure Process</h3>
+                    <p>Your information is kept private and secure throughout the process.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Cloud & Cards</h3>
+                    <p>Your trusted source for vapes and trading cards.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@cloudandcards.com</p>
+                    <p>Phone: (555) 123-4567</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="vapes.html">Vapes</a></li>
+                        <li><a href="tcg.html">TCG Cards</a></li>
+                        <li><a href="sell.html">Sell Your Cards</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Cloud & Cards. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Shopping Cart</h2>
+            <div id="cartItems"></div>
+            <div class="cart-total">
+                <strong>Total: �<span id="cartTotal">0.00</span></strong>
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">Checkout (Demo Only)</button>
+        </div>
+    </div>
+
+        <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script src="sell.js"></script>
+</body>
+</html>
+
+
